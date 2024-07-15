@@ -1,0 +1,52 @@
+T.c --> O(m+n), S.c --> O(1)
+class Solution {
+    public String minWindow(String s, String t) {
+     HashMap<Character,Integer> map = new HashMap<>();
+        for (int i = 0; i < t.length(); i++) {
+            map.put(t.charAt(i), map.getOrDefault(t.charAt(i), 0) + 1);
+        }
+
+        int start = 0;
+        int min = Integer.MAX_VALUE;
+        int prevStart = 0;
+        int match = 0;
+        boolean flag = false;
+        for(int i=0; i<s.length();i++) {
+            //incoming
+            if (map.containsKey(s.charAt(i))) {
+                int count = map.get(s.charAt(i));
+                count--;
+                map.put(s.charAt(i), count);
+                
+                if (count == 0) {
+                    match++;
+                }
+            }
+            
+            if(match == map.size()) {
+                flag = true;
+            }               
+            while(flag == true) {
+                if (i - start + 1 < min) {
+                    min = i - start + 1;
+                    prevStart = start;
+                } 
+                if(map.containsKey(s.charAt(start))){
+                    int count = map.get(s.charAt(start));
+                    count++;                    
+                    if (count > 0) {
+                        match--;
+                        flag = false;
+                    }                    
+                    map.put(s.charAt(start), count);
+                }
+                start++;
+            }
+        } 
+        if (min == Integer.MAX_VALUE) {
+            return "";
+        } else {
+            return s.substring(prevStart, prevStart + min);
+        }
+  }
+}

@@ -1,0 +1,21 @@
+T.c --> O(n), S.c --> O(n)
+class Solution {
+    List<Integer> list = new ArrayList<>();
+    public void flatten(TreeNode root) {
+       dfs(root);
+       TreeNode curr = root;
+       for(int i =1; i<list.size(); i++){
+        curr.left = null;  
+        curr.right = new TreeNode(list.get(i));
+        curr = curr.right;
+       }
+    }
+    private void dfs(TreeNode root){
+        if(root == null){
+            return;
+        }
+        list.add(root.val);
+        dfs(root.left);        
+        dfs(root.right);
+    }
+}
